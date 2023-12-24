@@ -1,0 +1,91 @@
+<div *ngIf="loadIsVisible" style="width: 100vw;height:100vh; background-color: rgb(167, 165, 165, 0.6); position: absolute;display: flex;align-items: center;justify-content: center;z-index: 999">
+  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div class="container">
+  <div
+    style="width: 100%;height:90vh;justify-content: center;align-items: center;display: flex;flex-direction: column;">
+    <span class="mb-3" >CropyAI Image Download Settings Tools</span>
+    <div id="my-card" class="card mb-3"
+      style="display: flex;align-items: center; justify-content: center;padding: 1rem;width: fit-content;height: fit-content;flex-direction: row;">
+      <div id="leftSide">
+        <div id="imageContainer">
+          <img #uploadImg (click)="uploadPohoto()" id="uploadImg" [src]=placeholderImg>
+        </div>
+        <p class="mt-1" *ngIf="resolution">İlk {{resolution}}</p>
+      </div>
+      <div id="right-side"> 
+        <div class="card-body" style="width: 100%;">
+          <input (change)="onFileSelected($event)" #imgInput style="display: none;" type="file" id="imgInput" name="img"
+            accept="image/*">
+          <div style="margin-top: 20px;">
+            <div class="input-group mb-3">
+              <label style="width: 50%;" class="input-group-text" for="inputGroupSelect02">Çözünürlük</label>
+              <select [disabled]="isDisabled" [(ngModel)]="formObject.cozunurluk" class="form-select"
+                id="inputGroupSelect02">
+                <option  value=1>360p</option>
+                <option value=2>720p</option>
+                <option value=3>1080p</option>
+                <option value=4>2k</option>
+                <option value=5>4k</option>
+                <option value=6>Özelleştir</option>
+                <option selected value=99>Varsayılan</option>
+              </select>
+              <div *ngIf="formObject.cozunurluk == 6 " class="input-group mt-3">
+                <input [(ngModel)]="formObject.specialResWidth" style="width: 30%;" type="number" class="form-control" placeholder="Width"
+                aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <span class="input-group-text" id="basic-addon2">px</span>
+                <input [(ngModel)]="formObject.specialResHeight" style="width: 30%;" type="number" class="form-control" placeholder="Height"
+                  aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <span class="input-group-text" id="basic-addon2">px</span>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <label style="width: 50%;" class="input-group-text" for="inputGroupSelect02">Dosya Tipi</label>
+              <select [disabled]="isDisabled" [(ngModel)]="formObject.fileType" class="form-select"
+                id="inputGroupSelect02">
+                <option value="png">.png</option>
+                <option value="jpg">.jpg</option>
+                <option value="jpeg">.jpeg</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <label for="customRange1" class="form-label">Sıkıştırma Oranı</label>
+              <input [disabled]="isDisabled" [(ngModel)]="formObject.compres" min="0" max="100" id=""  step="5" type="range"
+                class="form-range" id="customRange1">
+              {{formObject.compres}}
+            </div>
+            <div class="input-group mb-3">
+              <label style="width: 50%;" class="input-group-text" for="inputGroupSelect02">En-Boy Oranı</label>
+              <select [disabled]="isDisabled" [(ngModel)]="formObject.cerceve" class="form-select"
+                id="inputGroupSelect02">
+                <option selected value="varsayılan">Varsayılan</option>
+                <option value="4/3">4:3</option>
+                <option value="16/9">16/9</option>
+                <option value="0">Özelleştir</option>
+              </select>
+      
+              <div *ngIf="formObject.cerceve == '0' " class="input-group mt-3">
+                <input [(ngModel)]="formObject.specialRatWitdh" style="width: 30%;" type="text" class="form-control" placeholder="Width"
+                aria-label="Recipient's username" aria-describedby="basic-addon2" type="number">
+              <span class="input-group-text me-1" id="basic-addon2">En Oranı</span>
+                <input [(ngModel)]="formObject.specialRatHeight"  style="width: 30%;" type="text" class="form-control" placeholder="Height"
+                  aria-label="Recipient's username" aria-describedby="basic-addon2" type="number" >
+                <span class="input-group-text" id="basic-addon2">Boy Oranı</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+              <button [disabled]="isDisabled" (click)="submitForm()" style="width: 50%;" class="btn btn-primary">Dönüştür</button>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+  
+    </div>
+
+
+  </div>
+
+</div>

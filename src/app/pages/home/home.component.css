@@ -1,0 +1,38 @@
+#uploadImg{
+    cursor: pointer;
+    max-height: 400px;
+    max-width: 400px;
+}
+/* Mobil Cihazlar */
+#my-card {
+    width: 90%;
+  }
+  
+  /* Tabletler */
+  @media only screen and (min-width: 600px) {
+    #my-card  {
+      width: 60%;
+    }
+  }
+  
+  /* Dizüstü Bilgisayarlar */
+  @media only screen and (min-width: 1024px) {
+    #my-card  {
+      width: 30%;
+    }
+  }
+  
+  /* Masaüstü */
+  @media only screen and (min-width: 1200px) {
+    #my-card  {
+      width: 25%;
+    }
+  }
+  #leftSide{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  #right-side{
+    width: 50%;
+  }
