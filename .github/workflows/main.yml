@@ -21,9 +21,7 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         port: ${{ secrets.SERVER_PORT }}
         script: |
-         cd /home/photo-app.server.ubbo.tech/public_html
+         cd /home/github/photo-editor
          git pull origin release  # Pull the latest code from the release branch.
          npm install  # Install/update project dependencies.
          ng build --prod --base-href /photo-app/  # Build the project for production with the specified base href.
-         cp -r ./dist/cropyai/* .  # Copy the built files to the public_html directory.
-
