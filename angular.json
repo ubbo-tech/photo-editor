@@ -127,5 +127,8 @@
     "@ionic/angular-toolkit:page": {
       "styleext": "scss"
     }
+  },
+  "cli": {
+    "analytics": "4a319a80-7479-4a27-aba1-f738ebe740f3"
   }
 }
