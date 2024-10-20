@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-
+      - name: Setup Dependencies
+        run: npm install
       - name: Build project
         run: ng build --base-href /photo-app/
   deploy:
