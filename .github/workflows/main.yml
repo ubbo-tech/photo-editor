@@ -1,12 +1,12 @@
 name: Deploy to LiteSpeed Server
 
 on:
-pull_request:
-  branches:
-    - release
-push:
-  branches:
-    - release
+  pull_request:
+    branches:
+      - release
+  push:
+    branches:
+      - release
 
 jobs:
   build:
