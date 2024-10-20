@@ -98,7 +98,6 @@ export class HomeComponent {
         this.receivedImg.width = img.width;
         this.receivedImg.height = img.height;
         this.newImg = img
-        console.log("recevid img,", this.receivedImg.width, "-", this.receivedImg.height)
         this.loadIsVisible = false
       }, 800);
 
@@ -113,35 +112,29 @@ export class HomeComponent {
       this.loadIsVisible = false;
       return;
     }
-    console.log("devam")
     // İlk okunan base64 değeri base64Img değişkenine atanır
     let base64Img = this.selectedImage;
     // Crop İşlemi
     if (this.formObject.cerceve !== "varsayılan") {
       base64Img = await this.cropImg()
-      console.log("crop imageden dönen foto", base64Img)
     }
     // RESİZE
     if (this.formObject.cozunurluk !== 99) {
       base64Img = await this.resizeImg(base64Img);
-      console.log("resize foto", base64Img)
     };
     if (this.formObject.compres !== 0) {
       base64Img = await this.compressImg(base64Img);
     };
     if (this.receivedImg.type !== this.formObject.fileType) {
       if (this.formObject.fileType == "png") {
-        console.log("png")
         base64Img = await this.imageService.convertFormat(base64Img, 'image/png')
       }
       else if (this.formObject.fileType == "jpg" || this.formObject.fileType == "jpeg") {
-        console.log("jpg/jpeg")
         base64Img = await this.imageService.convertFormat(base64Img, 'image/jpg')
       }
 
     }
     setTimeout(() => {
-      console.log("teeeeeeest")
       var a = document.createElement('a');
       a.href = base64Img;
       a.download = 'cropyai.' + this.formObject.fileType; // İndirilen dosyanın adı
@@ -155,27 +148,23 @@ export class HomeComponent {
 
   formValid() {
     return new Promise<boolean>((resolve, reject) => {
-      console.log(this.formObject)
       resolve(true);
     })
   }
 
   cropImg() {
     return new Promise<string>((resolve, reject) => {
-      console.log("*****")
       //orj img
       const sourceWidth = this.receivedImg.width; // Orijinal resmin genişliği
       const sourceHeight = this.receivedImg.height; // Orijinal resmin yüksekliği
       const inputImageAspectRatio = sourceWidth / sourceHeight; // Orijinal resmin en boy oranı
-      console.log(" Orijinal resmin en boy oranı", sourceWidth, " / ", sourceHeight)
       let widthRatio: any;
       let heightRatio: any;
       if (this.formObject.cerceve === '0') {
         widthRatio = this.formObject.specialRatWitdh
         heightRatio = this.formObject.specialRatHeight
-        console.log(widthRatio)
         if (widthRatio < 1 || heightRatio < 1) {
-          alert('En Boy Oranı alanları için pozitif tam sayılar geeçerlidir');
+          alert('En Boy Oranı alanları için pozitif tam sayılar geçerlidir');
           this.loadIsVisible = false
           return;
         }
@@ -185,7 +174,6 @@ export class HomeComponent {
         widthRatio = parseInt(size[0], 10);
         heightRatio = parseInt(size[1], 10);
       }
-      console.log("Crop: ", widthRatio, " / ", heightRatio);
       const outputImageAspectRatio = widthRatio / heightRatio;
 
       // başlangıçtat eşit kabul edelim
@@ -198,25 +186,19 @@ export class HomeComponent {
       } else if (inputImageAspectRatio < outputImageAspectRatio) {
         outputHeight = sourceWidth / outputImageAspectRatio;
       }
-      console.log("son haldeki çözünürlük", outputWidth, " / ", outputHeight)
-      console.log("son oran",)
 
       // create a canvas that will present the output image
       const outputImage = document.createElement('canvas');
       // set it to the same size as the image
       outputImage.width = outputWidth;
       outputImage.height = outputHeight;
-      console.log("nihai somuç karesi", outputImage.width, outputImage.height);
       // Orjinal resmin orta noktası
       var originalCenterX = sourceWidth / 2;
       var originalCenterY = sourceHeight / 2;
 
       // Yeni kırpılmış resmin köşe noktalarının hesaplanması
       var newCornerX = originalCenterX - (outputImage.width / 2);
-      console.log(originalCenterX, "-", (outputImage.width / 2), " = ", newCornerX)
       var newCornerY = originalCenterY - (outputImage.height / 2);
-      console.log(originalCenterY, "-", (outputImage.height / 2), " = ", newCornerY)
-      console.log("Yeni kırpılmış resmin köşe noktalarının hesaplanması", newCornerX, newCornerY);
 
 
       ///// download new img
@@ -224,12 +206,10 @@ export class HomeComponent {
       canvas.height = outputImage.height;
       canvas.width = outputImage.width;
       var ctx = canvas.getContext('2d');
-      console.log("NEW CORNER", newCornerX, " Newc Y", newCornerY)
 
       ctx?.drawImage(this.newImg, newCornerX, newCornerY, outputImage.width, outputImage.height, 0, 0, outputImage.width, outputImage.height);
       var croppedImage = canvas.toDataURL('image/jpeg'); // Resmi veri URL'sine dönüştür
       setTimeout(() => {
-        console.log("son base64", croppedImage)
         // İndirme bağlantısını oluştur
         // var downloadLink = document.createElement('a');
         // document.body.appendChild(downloadLink);
@@ -259,7 +239,6 @@ export class HomeComponent {
         const sourceWidth = this.receivedImg.width; // Orijinal resmin genişliği 
         const sourceHeight = this.receivedImg.height; // Orijinal resmin yüksekliği 
         const inputImageAspectRatio = sourceWidth / sourceHeight; // Orijinal resmin en boy oranı 
-        console.log("orjinal en boy",inputImageAspectRatio)
         // başlangıçtat eşit kabul edelim
         let outputWidth = sourceWidth;
         let outputHeight = sourceHeight;
@@ -278,7 +257,6 @@ export class HomeComponent {
 
         canvas.width =  self.resolutionSize[val].width
         canvas.height =  self.resolutionSize[val].height
-        console.log("çizilecek çöz",self.formObject.specialResWidth, "x", self.formObject.specialResHeight)
         img.addEventListener('load', function () {
           ctx?.drawImage(img,
             startX, startY, outputWidth, outputHeight,
@@ -287,7 +265,6 @@ export class HomeComponent {
           // create a new base64 encoding
           var resampledImage = new Image();
           resampledImage.height=self.formObject.specialResHeight
-          console.log("buralar çalıştı")
           resampledImage.width=self.formObject.specialResWidth 
           resampledImage.src = canvas.toDataURL();
           resolve(resampledImage.src);
@@ -322,7 +299,6 @@ export class HomeComponent {
         
         canvas.width = self.formObject.specialResWidth
         canvas.height = self.formObject.specialResHeight ;
-        console.log("çizilecek çöz",self.formObject.specialResWidth, "x", self.formObject.specialResHeight)
         img.addEventListener('load', function () {
           ctx?.drawImage(img,
             startX, startY, outputWidth, outputHeight,
@@ -331,36 +307,12 @@ export class HomeComponent {
           // create a new base64 encoding
           var resampledImage = new Image();
           resampledImage.height=self.formObject.specialResHeight
-          console.log("buralar çalıştı")
           resampledImage.width=self.formObject.specialResWidth 
           resampledImage.src = canvas.toDataURL();
           resolve(resampledImage.src);
         }, false);
         return;
       }
-
-      // console.log(canvas.width, canvas.height)
-      // img.addEventListener('load', function () {
-      //   ctx?.drawImage(img,
-      //     0, 0, img.width, img.height,
-      //     0, 0, canvas.width, canvas.height
-      //   );
-        
-      //   // create a new base64 encoding
-      //   var resampledImage = new Image();
-      //   resampledImage.src = canvas.toDataURL();
-      //   resolve(resampledImage.src);
-      //   // console.log(resampledImage.src);
-      //   // var a = document.createElement('a');
-      //   // a.href = resampledImage.src;
-      //   // a.download = 'resize.png'; // İndirilen dosyanın adı
-      //   // document.body.appendChild(a);
-      //   // a.click();
-      //   // document.body.removeChild(a);
-
-      // }, false);
-      // ctx?.drawImage(img, 0, 0, self.resolutionSize[val].width, self.resolutionSize[val].height);
-
     })
 
   };
@@ -382,9 +334,7 @@ export class HomeComponent {
         // Sıkıştırma oranı ayarlanabilir
         if (self.formObject.compres) {
           const quality: any = 1 - (self.formObject.compres / 100);
-          console.log(quality)
           const compressedBase64: any = canvas.toDataURL('image/jpeg', quality);
-          console.log("sıkıştırılmış", compressedBase64)
           resolve(compressedBase64)
         }
       }, false);
