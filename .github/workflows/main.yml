@@ -21,7 +21,7 @@ jobs:
         run: npm install -g @angular/cli
       - name: Build project
         run: ng build --base-href /photo-app/
-  deploy to ubbo server:
+  deploy-to-ubbo-server:
     runs-on: ubuntu-latest
     needs: build
 
