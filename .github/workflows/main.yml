@@ -17,6 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Dependencies
         run: npm install
+      - name: Install Angular CLOI
+        run: npm install -g @angular/cli
       - name: Build project
         run: ng build --base-href /photo-app/
   deploy:
