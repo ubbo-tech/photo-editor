@@ -1,12 +1,12 @@
 name: Deploy to LiteSpeed Server
 
 on:
-pull_request:
-  branches:
-    - release
-push:
-  branches:
-    - release
+  pull_request:
+    branches:
+      - release
+  push:
+    branches:
+      - release
 
 jobs:
   build:
@@ -15,7 +15,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-
+      - name: Setup Dependencies
+        run: npm install
+      - name: Install Angular CLOI
+        run: npm install -g @angular/cli
       - name: Build project
         run: ng build --base-href /photo-app/
   deploy:
